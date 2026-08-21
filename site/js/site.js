@@ -1,4 +1,16 @@
 (function(){
+  var cta = document.querySelector('.cta-circle');
+  if (cta) cta.innerHTML = 'Start Your<br>Journey';
+
+  function pageFile(){
+    var p = (location.pathname || '').split('/').pop() || '';
+    return p.toLowerCase();
+  }
+  function isHomePage(){
+    var p = pageFile();
+    return p === '' || p === 'index.html' || p === 'index.htm';
+  }
+
   var t = document.querySelector('.nav-toggle');
   var n = document.querySelector('.primary');
   if (t && n){
@@ -67,8 +79,13 @@
         dd.appendChild(child);
         li.appendChild(dd);
       }
+      if (label === 'home'){
+        li.classList.add('nav-home');
+        if (isHomePage()) li.classList.add('is-current');
+      }
       if (childDropdown(li)) li.classList.add('has-sub');
       li.classList.remove('open');
+      li.classList.remove('active');
     });
 
     var scrollY = 0;
@@ -77,6 +94,7 @@
     function collapseSubs(){
       Array.prototype.forEach.call(n.children, function(li){
         li.classList.remove('open');
+        li.classList.remove('active');
       });
     }
     function setOpen(open){
@@ -121,9 +139,9 @@
       if (isTop && li.classList.contains('has-sub') && isMobile()){
         e.preventDefault();
         e.stopPropagation();
-        var was = li.classList.contains('open');
-        collapseSubs();
-        if (!was) li.classList.add('open');
+        var nowOpen = !li.classList.contains('open');
+        li.classList.toggle('open', nowOpen);
+        li.classList.toggle('active', nowOpen);
         return;
       }
       if (a.getAttribute('href') === '#') e.preventDefault();
