@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Start Your Journey | Acton Academy Kingwood</title>
+<link rel="icon" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap-wide header-inner">
+    <a class="brand" href="index.html"><img src="images/logo.png" alt="Acton Academy Kingwood"></a>
+    <button class="nav-toggle" aria-label="Menu"><span></span></button>
+    <ul class="primary">
+      <li><a href="#">About Us</a>
+        <div class="dropdown">
+          <a href="campus.html">Our Campus</a>
+          <a href="team.html">Our Team</a>
+        </div>
+      </li>
+      <li><a href="#">How We Learn</a>
+        <div class="dropdown">
+          <a href="learning-design.html">Learning Design</a>
+          <a href="studios.html">Studios</a>
+          <a href="calendar.html">Academic Calendar</a>
+        </div>
+      </li>
+      <li><a href="resources.html">Resources</a>
+        <div class="dropdown">
+          <a href="deep-dive.html">Get Inspired</a>
+          <a href="faq.html">FAQ</a>
+        </div>
+      </li>
+      <li><a href="tours.html">Tours</a></li>
+      <li><a href="enrollment.html">Enroll/Tuition</a></li>
+    </ul>
+    <a class="phone-link" href="tel:346-572-4531">
+      <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.4 0 .7-.3 1L6.6 10.8z"/></svg>
+      346-572-4531
+    </a>
+    <a class="cta-circle" href="apply.html">Start<br>Your<br>Journey</a>
+  </div>
+</header>
+
+
+<div class="seen">
+  <div class="seen-label">AS SEEN ON</div>
+  <div class="seen-row">
+    <span class="tedx">TEDx</span>
+    <span>Forbes</span>
+    <span class="ew">EducationWeek</span>
+    <span>Inc.</span>
+    <span>The Washington Post</span>
+    <span class="npr"><span>n</span><span>p</span><span>r</span></span>
+  </div>
+</div>
+
+<section class="apply-hero">
+  <div class="wrap">
+    <h1>Acton Academy is an Accredited Network of K-12 Schools</h1>
+    <p>300+ Locations | Transforming Education Worldwide</p>
+    <form class="form-card" id="apply-form" action="#" method="post">
+      <h3>Complete this short survey to join the waitlist or start the audition process.</h3>
+      <div class="form-step">
+        <div class="group-label">Parent Contact Info</div>
+        <label>First Name <span class="req">*</span></label>
+        <input name="first" required>
+        <label>Last Name <span class="req">*</span></label>
+        <input name="last" required>
+        <label>Email <span class="req">*</span></label>
+        <input name="email" type="email" required>
+        <label>Phone <span class="req">*</span></label>
+        <input name="phone" type="tel" required>
+        <div class="form-actions"><button class="btn btn-rect btn-blue" type="button" data-next>NEXT →</button></div>
+      </div>
+      <div class="form-step hidden">
+        <div class="group-label">Address</div>
+        <label>Street Address</label><input name="street">
+        <label>City</label><input name="city">
+        <label>State</label><input name="state">
+        <label>Country</label><input name="country" value="United States">
+        <label>Postal code</label><input name="zip">
+        <div class="form-actions">
+          <button class="btn btn-rect" type="button" data-back style="background:#888">Back</button>
+          <button class="btn btn-rect btn-blue" type="button" data-next>NEXT →</button>
+        </div>
+      </div>
+      <div class="form-step hidden">
+        <div class="group-label">Child 1 Information</div>
+        <label>Oldest Child's First Name</label><input name="c1_first">
+        <label>Oldest Child's Last Name</label><input name="c1_last">
+        <label>Oldest Child's Date of Birth</label><input name="c1_dob" type="date">
+        <label>Oldest Child's Ideal Start Date</label><input name="c1_start">
+        <label>Oldest Child's Current Grade and School</label><input name="c1_school">
+        <label>Do You Have Additional Children You Would Like to Add? <span class="req">*</span></label>
+        <select name="more_children"><option value="No">No</option><option value="Yes">Yes</option></select>
+        <div class="child2-fields hidden">
+          <div class="group-label">Child 2 Information</div>
+          <label>2nd Child's First Name</label><input name="c2_first">
+          <label>2nd Child's Last Name</label><input name="c2_last">
+          <label>2nd Child's Date of Birth</label><input name="c2_dob" type="date">
+          <label>2nd Child's Ideal Start Date</label><input name="c2_start">
+          <label>2nd Child's Current Grade and School</label><input name="c2_school">
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-rect" type="button" data-back style="background:#888">Back</button>
+          <button class="btn btn-rect btn-blue" type="button" data-next>NEXT →</button>
+        </div>
+      </div>
+      <div class="form-step hidden">
+        <div class="group-label">Final Questions</div>
+        <label>How did you hear about us? <span class="req">*</span></label><textarea name="hear" required></textarea>
+        <label>What excites your family most about Acton Academy? <span class="req">*</span></label><textarea name="excites" required></textarea>
+        <label>What concerns you most? <span class="req">*</span></label><textarea name="concerns" required></textarea>
+        <label>How would you describe your, your spouse's and your child's learning environment so far? <span class="req">*</span></label><textarea name="env" required></textarea>
+        <label>Do you feel like you and your family have been on a passionate Hero's Journey in life or are ready to start? <span class="req">*</span></label><textarea name="hero" required></textarea>
+        <div class="form-actions">
+          <button class="btn btn-rect" type="button" data-back style="background:#888">Back</button>
+          <button class="btn btn-rect btn-blue" type="submit">SUBMIT</button>
+        </div>
+      </div>
+      <div class="form-done hidden">
+        <p style="margin-top:12px">Thank you. Your information has been received.</p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<div class="seen">
+  <div class="seen-label">AS SEEN ON</div>
+  <div class="seen-row">
+    <span class="tedx">TEDx</span>
+    <span>Forbes</span>
+    <span class="ew">EducationWeek</span>
+    <span>Inc.</span>
+    <span>The Washington Post</span>
+    <span class="npr"><span>n</span><span>p</span><span>r</span></span>
+  </div>
+</div>
+
+
+<footer class="site-footer">
+  <div class="wrap-wide footer-inner">
+    <div>
+      <a class="brand" href="index.html"><img src="images/logo.png" alt="Acton Academy Kingwood"></a>
+      <div class="copy">© Acton Academy Kingwood 2019-2020</div>
+    </div>
+    <div class="footer-phone"><a class="phone-link" href="tel:346-572-4531" style="justify-content:center">📞 346-572-4531</a></div>
+    <div class="footer-more">
+      <div class="find">Find out More...</div>
+      <a class="btn btn-pill" href="https://links.actonkingwood.com/parents-shopper-guide" target="_blank" rel="noopener">Download the Parent Guide to Education</a>
+      <div class="footer-links">
+        <a href="https://www.childrensbusinessfair.org/porter-texas" target="_blank" rel="noopener">Children's Business Fair</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<script src="js/site.js"></script>
+</body>
+</html>
