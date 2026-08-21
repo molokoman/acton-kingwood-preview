@@ -6,13 +6,54 @@
     backdrop.className = 'nav-backdrop';
     backdrop.setAttribute('aria-hidden', 'true');
     document.body.appendChild(backdrop);
+
+    var closeBtn = document.createElement('button');
+    closeBtn.className = 'nav-close';
+    closeBtn.type = 'button';
+    closeBtn.setAttribute('aria-label', 'Close');
+    closeBtn.appendChild(document.createTextNode('\u2715'));
+    document.body.appendChild(closeBtn);
+
     if (!n.id) n.id = 'primary-nav';
     t.setAttribute('aria-controls', n.id);
     t.setAttribute('aria-expanded', 'false');
     t.setAttribute('aria-label', 'Menu');
 
+    function labels(){
+      return Array.prototype.map.call(n.querySelectorAll(':scope > li > a'), function(a){
+        return (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      });
+    }
+    var have = labels();
+    function addExtra(label, href, where, attrs){
+      if (have.indexOf(label.toLowerCase()) !== -1) return;
+      var li = document.createElement('li');
+      li.className = 'nav-mobile-extra';
+      var a = document.createElement('a');
+      a.href = href;
+      a.textContent = label;
+      if (attrs) Object.keys(attrs).forEach(function(k){ a.setAttribute(k, attrs[k]); });
+      li.appendChild(a);
+      if (where === 'start') n.insertBefore(li, n.firstChild);
+      else n.appendChild(li);
+      have = labels();
+    }
+    addExtra('Home', 'index.html', 'start');
+    addExtra('Start Your Journey', 'apply.html', 'end');
+    addExtra("Children's Business Fair", 'https://www.childrensbusinessfair.org/porter-texas', 'end', {target:'_blank', rel:'noopener'});
+
+    Array.prototype.forEach.call(n.children, function(li){
+      if (li.querySelector(':scope > .dropdown')) li.classList.add('has-sub');
+    });
+
     var scrollY = 0;
+    function isMobile(){ return window.innerWidth <= 980; }
     function isOpen(){ return n.classList.contains('open'); }
+    function collapseSubs(){
+      Array.prototype.forEach.call(n.querySelectorAll('li.has-sub.open'), function(li){
+        li.classList.remove('open');
+      });
+    }
     function setOpen(open){
       n.classList.toggle('open', open);
       t.classList.toggle('open', open);
@@ -21,10 +62,7 @@
       backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
       t.setAttribute('aria-expanded', open ? 'true' : 'false');
       t.setAttribute('aria-label', open ? 'Close' : 'Menu');
-      var header = document.querySelector('.site-header');
-      if (header){
-        document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
-      }
+      if (!open) collapseSubs();
       if (open){
         scrollY = window.scrollY || window.pageYOffset;
         document.body.style.position = 'fixed';
@@ -42,6 +80,7 @@
       }
     }
     t.addEventListener('click', function(){ setOpen(!isOpen()); });
+    closeBtn.addEventListener('click', function(){ setOpen(false); });
     backdrop.addEventListener('click', function(){ setOpen(false); });
     document.addEventListener('keydown', function(e){
       if ((e.key === 'Escape' || e.key === 'Esc') && isOpen()) setOpen(false);
@@ -51,7 +90,16 @@
     });
     n.addEventListener('click', function(e){
       var a = e.target.closest('a');
-      if (!a){ setOpen(false); return; }
+      if (!a || !n.contains(a)) return;
+      var li = a.parentElement;
+      var parentLink = li && li.classList.contains('has-sub') && a === li.querySelector(':scope > a');
+      if (parentLink && isMobile()){
+        e.preventDefault();
+        var was = li.classList.contains('open');
+        collapseSubs();
+        if (!was) li.classList.add('open');
+        return;
+      }
       if (a.getAttribute('href') === '#') e.preventDefault();
     });
   }
