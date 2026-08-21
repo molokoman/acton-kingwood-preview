@@ -1,7 +1,60 @@
 (function(){
   var t = document.querySelector('.nav-toggle');
   var n = document.querySelector('.primary');
-  if (t && n) t.addEventListener('click', function(){ n.classList.toggle('open'); });
+  if (t && n){
+    var backdrop = document.createElement('div');
+    backdrop.className = 'nav-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(backdrop);
+    if (!n.id) n.id = 'primary-nav';
+    t.setAttribute('aria-controls', n.id);
+    t.setAttribute('aria-expanded', 'false');
+    t.setAttribute('aria-label', 'Menu');
+
+    var scrollY = 0;
+    function isOpen(){ return n.classList.contains('open'); }
+    function setOpen(open){
+      n.classList.toggle('open', open);
+      t.classList.toggle('open', open);
+      document.body.classList.toggle('nav-open', open);
+      document.documentElement.classList.toggle('nav-open', open);
+      backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      t.setAttribute('aria-label', open ? 'Close' : 'Menu');
+      var header = document.querySelector('.site-header');
+      if (header){
+        document.documentElement.style.setProperty('--header-h', header.offsetHeight + 'px');
+      }
+      if (open){
+        scrollY = window.scrollY || window.pageYOffset;
+        document.body.style.position = 'fixed';
+        document.body.style.top = '-' + scrollY + 'px';
+        document.body.style.left = '0';
+        document.body.style.right = '0';
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, scrollY);
+      }
+    }
+    t.addEventListener('click', function(){ setOpen(!isOpen()); });
+    backdrop.addEventListener('click', function(){ setOpen(false); });
+    document.addEventListener('keydown', function(e){
+      if ((e.key === 'Escape' || e.key === 'Esc') && isOpen()) setOpen(false);
+    });
+    window.addEventListener('resize', function(){
+      if (window.innerWidth > 980 && isOpen()) setOpen(false);
+    });
+    n.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a){ setOpen(false); return; }
+      if (a.getAttribute('href') === '#') e.preventDefault();
+    });
+  }
 
   document.querySelectorAll('.carousel').forEach(function(c){
     var track = c.querySelector('.carousel-track');
