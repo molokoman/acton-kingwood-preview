@@ -23,7 +23,7 @@
     closeBtn.className = 'nav-close';
     closeBtn.type = 'button';
     closeBtn.setAttribute('aria-label', 'Close');
-    closeBtn.appendChild(document.createTextNode('\u2715'));
+    closeBtn.appendChild(document.createTextNode('\u00d7'));
     document.body.appendChild(closeBtn);
 
     if (!n.id) n.id = 'primary-nav';
@@ -81,7 +81,7 @@
       }
       if (label === 'home'){
         li.classList.add('nav-home');
-        if (isHomePage()) li.classList.add('is-current');
+        if (isHomePage()){ li.classList.add('is-current'); li.classList.add('current'); }
       }
       if (childDropdown(li)) li.classList.add('has-sub');
       li.classList.remove('open');
@@ -89,6 +89,8 @@
     });
 
     var scrollY = 0;
+    var navHome = n.parentNode;
+    var navNext = n.nextSibling;
     function isMobile(){ return window.innerWidth <= 980; }
     function isOpen(){ return n.classList.contains('open'); }
     function collapseSubs(){
@@ -96,6 +98,14 @@
         li.classList.remove('open');
         li.classList.remove('active');
       });
+    }
+    function parkNav(open){
+      if (open){
+        document.body.appendChild(n);
+      } else if (n.parentNode !== navHome){
+        if (navNext && navNext.parentNode === navHome) navHome.insertBefore(n, navNext);
+        else navHome.appendChild(n);
+      }
     }
     function setOpen(open){
       n.classList.toggle('open', open);
@@ -106,6 +116,7 @@
       t.setAttribute('aria-expanded', open ? 'true' : 'false');
       t.setAttribute('aria-label', open ? 'Close' : 'Menu');
       collapseSubs();
+      parkNav(open);
       if (open){
         scrollY = window.scrollY || window.pageYOffset;
         document.body.style.position = 'fixed';
@@ -139,9 +150,9 @@
       if (isTop && li.classList.contains('has-sub') && isMobile()){
         e.preventDefault();
         e.stopPropagation();
-        var nowOpen = !li.classList.contains('open');
-        li.classList.toggle('open', nowOpen);
-        li.classList.toggle('active', nowOpen);
+        var next = !(li.classList.contains('open') || li.classList.contains('active'));
+        li.classList.toggle('open', next);
+        li.classList.toggle('active', next);
         return;
       }
       if (a.getAttribute('href') === '#') e.preventDefault();
