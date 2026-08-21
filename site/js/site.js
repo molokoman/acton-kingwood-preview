@@ -20,9 +20,22 @@
     t.setAttribute('aria-label', 'Menu');
 
     function labels(){
-      return Array.prototype.map.call(n.querySelectorAll(':scope > li > a'), function(a){
-        return (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      return Array.prototype.map.call(n.children, function(li){
+        var a = firstChildLink(li);
+        return a ? (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() : '';
       });
+    }
+    function firstChildLink(li){
+      for (var i = 0; i < li.children.length; i++){
+        if (li.children[i].tagName === 'A') return li.children[i];
+      }
+      return null;
+    }
+    function childDropdown(li){
+      for (var i = 0; i < li.children.length; i++){
+        if (li.children[i].classList && li.children[i].classList.contains('dropdown')) return li.children[i];
+      }
+      return null;
     }
     var have = labels();
     function addExtra(label, href, where, attrs){
@@ -43,14 +56,26 @@
     addExtra("Children's Business Fair", 'https://www.childrensbusinessfair.org/porter-texas', 'end', {target:'_blank', rel:'noopener'});
 
     Array.prototype.forEach.call(n.children, function(li){
-      if (li.querySelector(':scope > .dropdown')) li.classList.add('has-sub');
+      var a = firstChildLink(li);
+      var label = a ? (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() : '';
+      if (label === 'enroll/tuition' && !childDropdown(li)){
+        var dd = document.createElement('div');
+        dd.className = 'dropdown nav-mobile-sub';
+        var child = document.createElement('a');
+        child.href = 'enrollment.html';
+        child.textContent = 'Enrollment/Tuition';
+        dd.appendChild(child);
+        li.appendChild(dd);
+      }
+      if (childDropdown(li)) li.classList.add('has-sub');
+      li.classList.remove('open');
     });
 
     var scrollY = 0;
     function isMobile(){ return window.innerWidth <= 980; }
     function isOpen(){ return n.classList.contains('open'); }
     function collapseSubs(){
-      Array.prototype.forEach.call(n.querySelectorAll('li.has-sub.open'), function(li){
+      Array.prototype.forEach.call(n.children, function(li){
         li.classList.remove('open');
       });
     }
@@ -62,7 +87,7 @@
       backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
       t.setAttribute('aria-expanded', open ? 'true' : 'false');
       t.setAttribute('aria-label', open ? 'Close' : 'Menu');
-      if (!open) collapseSubs();
+      collapseSubs();
       if (open){
         scrollY = window.scrollY || window.pageYOffset;
         document.body.style.position = 'fixed';
@@ -89,12 +114,13 @@
       if (window.innerWidth > 980 && isOpen()) setOpen(false);
     });
     n.addEventListener('click', function(e){
-      var a = e.target.closest('a');
+      var a = e.target.closest ? e.target.closest('a') : null;
       if (!a || !n.contains(a)) return;
       var li = a.parentElement;
-      var parentLink = li && li.classList.contains('has-sub') && a === li.querySelector(':scope > a');
-      if (parentLink && isMobile()){
+      var isTop = li && li.parentElement === n;
+      if (isTop && li.classList.contains('has-sub') && isMobile()){
         e.preventDefault();
+        e.stopPropagation();
         var was = li.classList.contains('open');
         collapseSubs();
         if (!was) li.classList.add('open');
