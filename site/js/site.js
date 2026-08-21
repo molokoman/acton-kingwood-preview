@@ -3,7 +3,7 @@
   if (cta) cta.innerHTML = 'Start Your<br>Journey';
 
   function pageFile(){
-    var p = (location.pathname || '').split('/').pop() || '';
+    var p = (location.pathname || '').replace(/\/+$/, '').split('/').pop() || '';
     return p.toLowerCase();
   }
   function isHomePage(){
@@ -67,6 +67,23 @@
     addExtra('Start Your Journey', 'apply.html', 'end');
     addExtra("Children's Business Fair", 'https://www.childrensbusinessfair.org/porter-texas', 'end', {target:'_blank', rel:'noopener'});
 
+    var sectionOf = {
+      'index.html': 'home',
+      'index.htm': 'home',
+      'campus.html': 'about us',
+      'team.html': 'about us',
+      'learning-design.html': 'how we learn',
+      'studios.html': 'how we learn',
+      'calendar.html': 'how we learn',
+      'resources.html': 'resources',
+      'deep-dive.html': 'resources',
+      'faq.html': 'resources',
+      'tours.html': 'tours',
+      'enrollment.html': 'enroll/tuition',
+      'apply.html': 'start your journey'
+    };
+    var currentSection = sectionOf[pageFile()] || (isHomePage() ? 'home' : '');
+
     Array.prototype.forEach.call(n.children, function(li){
       var a = firstChildLink(li);
       var label = a ? (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase() : '';
@@ -79,9 +96,10 @@
         dd.appendChild(child);
         li.appendChild(dd);
       }
-      if (label === 'home'){
-        li.classList.add('nav-home');
-        if (isHomePage()){ li.classList.add('is-current'); li.classList.add('current'); }
+      if (label === 'home') li.classList.add('nav-home');
+      if (currentSection && label === currentSection){
+        li.classList.add('is-current');
+        li.classList.add('current');
       }
       if (childDropdown(li)) li.classList.add('has-sub');
       li.classList.remove('open');
@@ -119,16 +137,10 @@
       parkNav(open);
       if (open){
         scrollY = window.scrollY || window.pageYOffset;
-        document.body.style.position = 'fixed';
-        document.body.style.top = '-' + scrollY + 'px';
-        document.body.style.left = '0';
-        document.body.style.right = '0';
+        document.documentElement.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden';
       } else {
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.left = '';
-        document.body.style.right = '';
+        document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
         window.scrollTo(0, scrollY);
       }
